@@ -8,6 +8,7 @@
 '''
 from lib.sender.es_sender import es_sender
 from lib.parser.f5_parser import f5_parser
+from lib.parser.f5cef_parser import f5cef_parser
 from lib.parser.modsec_parser import modsec_parser
 import argparse
 import configparser
@@ -16,7 +17,7 @@ import os
 
 
 device_list = {'App-protect': 'attack_type="', 'ModesecurityJson': '{"transaction":{"',
-               'ModesecurityNormal': '-A--', 'Naxsi': 'NAXSI_FMT'}
+               'ModesecurityNormal': '-A--', 'Naxsi': 'NAXSI_FMT','App-protect-CEF':'CEF:'}
 
 
 def get_args():
@@ -51,7 +52,9 @@ def get_devicetype(file):
 def parse_file(filename, device_type):
     if device_type == 'App-protect':
         parser = f5_parser()
-    if device_type.startswith('Modesecurity'):
+    elif device_type == 'App-protect-CEF':
+        parser=f5cef_parser()
+    elif device_type.startswith('Modesecurity'):
         parser = modsec_parser()
     else:
         logging.error('Unrecognized log type. Quit.')

@@ -54,7 +54,7 @@ class f5_parser:
             logging.error(traceback.print_exc())
             return False
         base64_fields = ['param_name', 'name',
-                         'value', 'buffer', 'uri', 'object']
+                         'value', 'buffer', 'uri', 'object','vio_buffer']
         for key in base64_fields:
             result = self.base64(key, result)
         return result
@@ -72,7 +72,7 @@ class f5_parser:
                     pass
                 else:
                     basic_key=['viol_name','viol_index']
-                    data['violation_details']['BAD_MSG']['request-violations']['violation'][i]=collections.OrderedDict([('vio_'+k, v) if k not in basic_key else (k, v) for k, v in data['violation_details']['BAD_MSG']['request-violations']['violation'][i].items()])
+                    data['violation_details']['BAD_MSG']['request-violations']['violation'][i]=collections.OrderedDict([('viol_'+k, v) if k not in basic_key else (k, v) for k, v in data['violation_details']['BAD_MSG']['request-violations']['violation'][i].items()])
             return data
         except:
             logging.error(traceback.print_exc())
