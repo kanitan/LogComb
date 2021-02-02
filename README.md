@@ -12,11 +12,21 @@ Prepare your [ELK](https://elk-docker.readthedocs.io/) if you want to **visualiz
 
 **TODO List**
 
-- [ ] f5WAF seperated mode.
-- [ ] Naxsi parsing script.
-- [ ] Modsecurity normal format log parsing.
+- [x] Parsing logs
+- [x] Send parsed log to es server
+- [x] Support custom parsing rules.
+- [x] Support regex, custom functions.
+- [x] Built-in parsing rules
+  - [x] F5 waf(app-protect)
+  - [x] Modsecurity json format
+  - [ ] Modsecurity normal format
+  - [x] F5 CEF format(app-protect)
+  - [x] Splunk alert
+  - [x] Nginx comma seperated 
+  - [ ] Naxsi
+- [x] Auto recognize log type.
+
 - [ ] Parse log to the STANDERD format. **Notice**: This mode requires user to fill a table to tell the tool the meaning of field. Feel easy to fill the table, and don't worry about losing datas.
-- [ ] Auto recognize log type.
 
 
 
@@ -33,14 +43,13 @@ python ./logcomb.py -f /var/log/modsec_audit.log -ps
 ### Parameters
 
 ```shell
-usage: logcomb.py [-h] [--type TYPE] --file FILE [--dir DIR] [--parse]
+usage: logcomb.py [-h] [--prefix PREFIX] --file FILE [--dir DIR] [--parse]
                   [--send]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --type TYPE, -t TYPE  Identify log type. By default, the script will
-                        automaticly check log type. Supporting types:
-                        Modesecurity, ModesecurityJson, Naxsi, App-protect.
+  --prefix PREFIX, -pre PREFIX
+                        Decide the prefix of parsed log file name.
   --file FILE, -f FILE  Define origin log file to parse.
   --dir DIR, -d DIR     Define origin log document to parse.
   --parse, -p           Parsing.
@@ -58,7 +67,7 @@ optional arguments:
 Put one line log to test/example.log and run
 
 ```
-python ./lib/parser/${chose the parsing script}
+python parse.py
 ```
 
 And you will see the parsed log in terminal.

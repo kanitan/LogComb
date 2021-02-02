@@ -53,7 +53,7 @@ class es_sender:
                 break
             count = count+1
             doc = json.loads(line)
-            doc["@timestamp"] = datetime.now()
+            doc["@timestamp"] = datetime.utcnow()
             # doc['@timestamp'] = doc['time_stamp']
             doc_list.append(doc)
             if count % self.req_capacity == 0:
