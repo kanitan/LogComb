@@ -40,6 +40,8 @@ Config your Elasticsearch address in ``config.conf`` and run
 python ./logcomb.py -f /var/log/modsec_audit.log -ps
 ```
 
+Logcomb will parse the log and send result to ES.
+
 ### Parameters
 
 ```shell
@@ -71,5 +73,4 @@ python parse.py
 ```
 
 And you will see the parsed log in terminal.
-
 

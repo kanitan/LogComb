@@ -12,14 +12,17 @@
 import rule_list as r
 
 # rule_name:[signature,regex,function1,function2,function3...]
-
+# key name should be lowercase
 mapping = {
-    'App-protect': ['attack_type="',r.kv_parser,r.f5_parser], 
-    'ModesecurityJson': ['{"transaction":{"',r.json_parser,r.modsec_parser],
-    'ModesecurityNormal': ['-A--'], 
-    'Naxsi': ['NAXSI_FMT'],
-    'App-protect-CEF':['CEF:',r.CEF_parser],
-    'splunk':['unit_hostname',r.kv_parser],
-    'nginx':['request_time',r.nginx_parser]
+    'app-protect': ['attack_type="',r.kv_parser,r.f5_parser], 
+    'modesecurity-json': ['{"transaction":{"',r.json_parser,r.modsec_parser],
+    'modesecurity-normal': ['-A--'], 
+    'naxsi': ['NAXSI_FMT'],
+    'app-protect-cef':['CEF:',r.F5_CEF_parser],
+    'splunk':['unit_hostname',r.kv_parser,r.f5_parser],
+    # 'nginx_appsecurity':['request_time',r.nginx_appsecurity],
+    'nginxaccesslog':['WEB_',r.nginx_parser],
+    'zoom-nginxaccesslog':['request_time',r.kv_parser,r.zoom_nginx_parser],
+    'zoom-monitorlog':['{"requestDate": ',r.zoom_monitor_log]
     }
 

@@ -25,6 +25,7 @@ class es_sender:
     def __init__(self, log_file, conf_file):
         config = configparser.ConfigParser()
         config.read(conf_file)
+        print("Sending to ES server: ",config['es_server']['server_name'])
         self.client = Elasticsearch(config['es_server']['server_name'])
         self.log_file = log_file
         self.req_capacity = int(config['es_server']['req_capacity'])
@@ -34,13 +35,16 @@ class es_sender:
             self.index=os.path.splitext(os.path.split(log_file)[1])[0]
         print(self.index)
 
+    def gendata(self,datas):
+        for d in datas:
+            d['_index']=self.index
+            yield d
+
     def send(self, doc_list):
         resp = helpers.bulk(
             self.client,
-            doc_list,
-            index=self.index
+            self.gendata(doc_list)
         )
-        # print('Sending to ES, index',self.index)
         print("helpers.bulk() RESPONSE:", resp)
 
     def log_sender(self, instream):
@@ -53,7 +57,10 @@ class es_sender:
                 break
             count = count+1
             doc = json.loads(line)
-            doc["@timestamp"] = datetime.utcnow()
+            if not "@timestamp" in doc:
+                doc["@timestamp"] = datetime.utcnow()
+            else:
+                doc["@timestamp"]=datetime.strptime(doc["@timestamp"], '%Y-%m-%d %H:%M:%S')
             # doc['@timestamp'] = doc['time_stamp']
             doc_list.append(doc)
             if count % self.req_capacity == 0:
@@ -68,8 +75,8 @@ class es_sender:
 
 if __name__ == "__main__":
     # Testing
-    log_file='/Users/PennyLang/Desktop/Personal Files/toES/Modsec_LogParser/testing/example.log'
+    log_file='/Users/PennyLang/Downloads/splunk1626417927.log'
     conf_file=os.path.join(os.path.dirname(
-            os.path.realpath(__file__)), '../../config.conf')
+            os.path.realpath(__file__)), 'config.conf')
     sender = es_sender(log_file,conf_file)
-    # sender.send_file()
+    sender.send_file()
