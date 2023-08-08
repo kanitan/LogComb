@@ -2,7 +2,7 @@
 
 A log toolkit for security devices. The main idea of this tool is to make analyzers to concern on analysis rather than data preprocessing. Start to save your time.
 
-Avalible Devices Now: [Modsecurity](https://github.com/SpiderLabs/ModSecurity),[App-protect](https://docs.nginx.com/nginx-app-protect/admin-guide/).
+Good for devices like [Modsecurity](https://github.com/SpiderLabs/ModSecurity),[App-protect](https://docs.nginx.com/nginx-app-protect/admin-guide/).
 
 - [zh-cn 中文](zh-cn/README.md)
 
@@ -10,7 +10,7 @@ This logpaser is for  **Security Device Datas**. It's a great tool to parse logs
 
 Prepare your [ELK](https://elk-docker.readthedocs.io/) if you want to **visualize** datas.
 
-**TODO List**
+**Features**
 
 - [x] Parsing logs
 - [x] Send parsed log to es server
@@ -31,9 +31,19 @@ Prepare your [ELK](https://elk-docker.readthedocs.io/) if you want to **visualiz
 
 
 ## Usage
+### Test the tool
+
+Put one line log to test/example.log and run
+
+```python logcomb.py -t```
+
+And you will see the parsed log in terminal.
 
 ### Quick Start
 
+Run python ``./logcomb.py -f /var/log/modsec_audit.log -p`` to parse your log. Result file will be created in the same directory of log file.
+
+### Visualize in ELK
 Config your Elasticsearch address in ``config.conf`` and run
 
 ```bash
@@ -45,32 +55,24 @@ Logcomb will parse the log and send result to ES.
 ### Parameters
 
 ```shell
-usage: logcomb.py [-h] [--prefix PREFIX] --file FILE [--dir DIR] [--parse]
-                  [--send]
+usage: logcomb.py [-h] [--prefix PREFIX] [--file FILE] [--dir DIR] [--parse] [--send] [--logtype LOGTYPE] [--test]
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --prefix PREFIX, -pre PREFIX
-                        Decide the prefix of parsed log file name.
+                        Decide the prefix of parsed log file name
   --file FILE, -f FILE  Define origin log file to parse.
   --dir DIR, -d DIR     Define origin log document to parse.
   --parse, -p           Parsing.
   --send, -s            Send to ES.
+  --logtype LOGTYPE     See rule_list.py to choose specific log type.
+  --test, -t            Run testing.
 ```
 
 
-
-
-
-## Testing
-
-### Parsing Testing
-
-Put one line log to test/example.log and run
-
+## Add Logcomb to your bash
+for mac, edit ``~/.zshrc``, add
 ```
-python parse.py
+alias logcomb="python {root_path}/LogComb/logcomb.py"
 ```
-
-And you will see the parsed log in terminal.
-
+Save the file and run ``source``
